@@ -1,0 +1,18 @@
+{
+  "name": "बूथ मैनेजमेंट",
+  "short_name": "बूथ मैनेजर",
+  "description": "हिंदी बूथ और संपर्क प्रबंधन",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f3f7f5",
+  "theme_color": "#176b54",
+  "lang": "hi",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

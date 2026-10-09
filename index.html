@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#176b54">
+  <meta name="description" content="हिंदी बूथ और संपर्क प्रबंधन">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <title>बूथ मैनेजमेंट</title>
+  <style>
+    :root{font-family:system-ui,-apple-system,"Noto Sans Devanagari",sans-serif;color:#172522;background:#f3f7f5}
+    *{box-sizing:border-box} body{margin:0} header{background:#176b54;color:white;padding:20px 16px 16px}
+    header h1{margin:0 0 5px;font-size:24px} header p{margin:0;opacity:.9}
+    main{max-width:760px;margin:auto;padding:14px 12px 36px}
+    nav{display:flex;gap:8px;overflow:auto;padding:2px 0 12px}
+    button,.tab{font:inherit;border:0;border-radius:12px;padding:11px 14px;cursor:pointer}
+    button.primary{background:#176b54;color:white} button.secondary,.tab{background:white;color:#174f40;border:1px solid #d6e3dc}
+    .tab.active{background:#176b54;color:white}
+    .panel{background:white;border:1px solid #e0e9e4;border-radius:16px;padding:16px;margin:0 0 14px;box-shadow:0 2px 8px #1232}
+    h2{font-size:19px;margin:0 0 12px} label{display:block;font-weight:600;font-size:14px;margin:10px 0 6px}
+    input,select,textarea{width:100%;padding:12px;border:1px solid #bdcec5;border-radius:10px;font:inherit;background:#fff}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .metric{background:#edf5f0;border-radius:12px;padding:14px}.metric span{display:block;color:#45685a;font-size:13px}.metric strong{font-size:25px}
+    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row>*{flex:1}
+    .record{border:1px solid #e2eae5;border-radius:12px;padding:12px;margin-top:9px;overflow-wrap:anywhere}
+    .muted{color:#5e7068;font-size:13px}.pill{display:inline-block;background:#e8f3ec;border-radius:99px;padding:4px 8px;font-size:12px;margin:3px 3px 0 0}
+    .warning{background:#fff6df;border:1px solid #f0dfaa;padding:12px;border-radius:12px;font-size:13px}
+    .hidden{display:none!important} footer{text-align:center;color:#60756b;font-size:12px;padding:8px}
+    @media(min-width:600px){main{padding:20px}.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+  </style>
+</head>
+<body>
+<header>
+  <h1>🗳️ बूथ मैनेजमेंट</h1>
+  <p>बूथ, संपर्क और सहमति रिकॉर्ड</p>
+</header>
+<main>
+  <section id="login" class="panel">
+    <h2>एडमिन लॉगिन</h2>
+    <p class="muted">यह डेमो केवल इसी ब्राउज़र में डेटा रखता है। संवेदनशील या वास्तविक मतदाता डेटा इसमें न डालें।</p>
+    <label for="pin">डेमो PIN बनाएँ (कम से कम 4 अंक)</label>
+    <input id="pin" inputmode="numeric" type="password" maxlength="12" placeholder="PIN">
+    <button class="primary" id="loginBtn" style="width:100%;margin-top:12px">डेमो खोलें</button>
+    <p class="muted">नोट: यह PIN वास्तविक सर्वर लॉगिन नहीं है। लाइव उपयोग के लिए प्रमाणित बैकएंड जोड़ना जरूरी है।</p>
+  </section>
+
+  <section id="app" class="hidden">
+    <nav aria-label="मुख्य मेनू">
+      <button class="tab active" data-tab="dashboard">डैशबोर्ड</button>
+      <button class="tab" data-tab="booths">बूथ</button>
+      <button class="tab" data-tab="contacts">संपर्क</button>
+      <button class="tab" data-tab="reports">रिपोर्ट</button>
+      <button class="tab" data-tab="messages">संदेश</button>
+    </nav>
+
+    <section id="dashboard" class="view">
+      <div class="panel">
+        <h2>आपका डैशबोर्ड</h2>
+        <div class="grid">
+          <div class="metric"><span>कुल बूथ</span><strong id="mBooths">0</strong></div>
+          <div class="metric"><span>कुल संपर्क</span><strong id="mContacts">0</strong></div>
+          <div class="metric"><span>WhatsApp सहमति</span><strong id="mWa">0</strong></div>
+          <div class="metric"><span>SMS सहमति</span><strong id="mSms">0</strong></div>
+        </div>
+      </div>
+      <div class="warning">यह शुरुआती डेमो है। डेटा केवल इसी ब्राउज़र/डिवाइस में सेव होता है; ब्राउज़र डेटा हटने पर खो सकता है। अभी वास्तविक SMS या WhatsApp नहीं भेजे जाते।</div>
+    </section>
+
+    <section id="booths" class="view hidden">
+      <div class="panel">
+        <h2>नया बूथ जोड़ें</h2>
+        <form id="boothForm">
+          <label for="boothNo">बूथ संख्या</label><input id="boothNo" required maxlength="40" placeholder="जैसे 12">
+          <label for="boothArea">गाँव / वार्ड / क्षेत्र</label><input id="boothArea" required maxlength="100" placeholder="क्षेत्र का नाम">
+          <button class="primary" style="width:100%;margin-top:12px">बूथ सेव करें</button>
+        </form>
+      </div>
+      <div class="panel"><h2>बूथ सूची</h2><div id="boothList"></div></div>
+    </section>
+
+    <section id="contacts" class="view hidden">
+      <div class="panel">
+        <h2>नया संपर्क जोड़ें</h2>
+        <form id="contactForm">
+          <label for="contactName">नाम</label><input id="contactName" required maxlength="100" autocomplete="name">
+          <label for="contactPhone">मोबाइल नंबर</label><input id="contactPhone" required inputmode="tel" maxlength="16" placeholder="10 अंकों का नंबर">
+          <label for="contactBooth">बूथ</label><select id="contactBooth" required></select>
+          <label><input id="waConsent" type="checkbox" style="width:auto"> WhatsApp संदेश की सत्यापित सहमति दर्ज है</label>
+          <label><input id="smsConsent" type="checkbox" style="width:auto"> SMS संदेश की सत्यापित सहमति दर्ज है</label>
+          <p class="muted">केवल वास्तविक अनुमति होने पर सहमति चुनें। सहमति की तारीख अपने आप दर्ज होगी।</p>
+          <button class="primary" style="width:100%;margin-top:8px">संपर्क सेव करें</button>
+        </form>
+      </div>
+      <div class="panel">
+        <div class="row"><h2 style="margin:0">संपर्क सूची</h2><button id="exportBtn" class="secondary" type="button">CSV निर्यात</button></div>
+        <label for="searchContacts">नाम/नंबर खोजें</label><input id="searchContacts" placeholder="खोजें">
+        <div id="contactList"></div>
+      </div>
+    </section>
+
+    <section id="reports" class="view hidden">
+      <div class="panel"><h2>रिपोर्ट</h2><div id="reportContent"></div></div>
+      <div class="panel"><h2>बैकअप</h2><p class="muted">JSON बैकअप अपने डिवाइस पर सेव करें। इसमें निजी संपर्क जानकारी हो सकती है, इसे सुरक्षित रखें।</p><button id="backupBtn" class="primary">बैकअप डाउनलोड</button> <button id="restoreBtn" class="secondary">बैकअप इम्पोर्ट</button><input id="restoreFile" type="file" accept="application/json" class="hidden"></div>
+    </section>
+
+    <section id="messages" class="view hidden">
+      <div class="panel">
+        <h2>सूचना संदेश ड्राफ्ट</h2>
+        <p class="muted">इस डेमो में संदेश भेजना बंद है। केवल लागू नियमों के अनुरूप, सहमति-आधारित और तथ्यात्मक सूचना के लिए ड्राफ्ट तैयार करें।</p>
+        <label for="messageText">संदेश का टेक्स्ट</label>
+        <textarea id="messageText" rows="5">नमस्कार। मतदान की तारीख, समय और मतदान केंद्र की आधिकारिक जानकारी के लिए कृपया निर्वाचन आयोग की सूचना देखें।</textarea>
+        <button id="copyMessage" class="primary" style="width:100%;margin-top:10px">संदेश कॉपी करें</button>
+        <div class="warning" style="margin-top:12px">वास्तविक मैसेजिंग के लिए आधिकारिक WhatsApp Business Platform/SMS प्रदाता, सर्वर-साइड सहमति जाँच, opt-out सूची और लागू अनुमतियाँ जरूरी हैं।</div>
+      </div>
+    </section>
+    <p style="text-align:right"><button id="lockBtn" class="secondary">डेमो बंद करें</button></p>
+  </section>
+  <footer>बूथ मैनेजमेंट MVP • डेमो • वास्तविक उपयोग से पहले सुरक्षित सर्वर सेटअप करें</footer>
+</main>
+<script src="./app.js"></script>
+</body>
+</html>
