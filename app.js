@@ -1,7 +1,7 @@
 const SUPABASE_URL =
-'https://oomvafcwjzjwpvssmdmi.supabase.co/rest/v1/
+'https://oomvafcwjzjwpvssmdmi.supabase.co';
 const SUPABASE_KEY = 
-'sb_publishable_MsuyDVKxDk50cemAWBNKhg_QIzKvroX
+'sb_publishable_MsuyDVKxDk50cemAWBNKhg_QIzKvroX';
 let supabaseClient = null;
 if (window.supabase && typeof window.supabase.createClient === 'function') {
   supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
