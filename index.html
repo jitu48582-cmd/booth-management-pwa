@@ -39,15 +39,20 @@
   <p>बूथ, संपर्क और सहमति रिकॉर्ड</p>
 </header>
 <main>
-  <section id="login" class="panel">
-    <h2>एडमिन लॉगिन</h2>
-    <p class="muted">यह डेमो केवल इसी ब्राउज़र में डेटा रखता है। संवेदनशील या वास्तविक मतदाता डेटा इसमें न डालें।</p>
-    <label for="pin">डेमो PIN बनाएँ (कम से कम 4 अंक)</label>
-    <input id="pin" inputmode="numeric" type="password" maxlength="12" placeholder="PIN">
-    <button class="primary" id="loginBtn" style="width:100%;margin-top:12px">डेमो खोलें</button>
-    <p class="muted">नोट: यह PIN वास्तविक सर्वर लॉगिन नहीं है। लाइव उपयोग के लिए प्रमाणित बैकएंड जोड़ना जरूरी है।</p>
-  </section>
+  
+<section id="login" class="panel">
+  <h2>एडमिन लॉगिन</h2>
+  <label for="email">ईमेल</label>
+  <input id="email" type="email" autocomplete="username" placeholder="अपना ईमेल लिखें" required>
 
+  <label for="password">पासवर्ड</label>
+  <input id="password" type="password" autocomplete="current-password" placeholder="अपना पासवर्ड लिखें" required>
+
+  <button class="primary" id="loginBtn" type="button" style="width:100%;margin-top:12px">
+    लॉगिन करें
+  </button>
+  <p id="loginError" class="muted"></p>
+</section>
   <section id="app" class="hidden">
     <nav aria-label="मुख्य मेनू">
       <button class="tab active" data-tab="dashboard">डैशबोर्ड</button>
