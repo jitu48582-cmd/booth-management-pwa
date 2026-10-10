@@ -30,14 +30,34 @@ function showTab(tab) {
 }
 document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab)));
 
-$('loginBtn').addEventListener('click', () => {
-  const pin = $('pin').value.trim();
-  if (!/^\d{4,12}$/.test(pin)) return alert('कृपया कम से कम 4 अंकों का PIN लिखें।');
-  // Demo-only gate, intentionally not represented as production authentication.
+
+$('loginBtn').addEventListener('click', async () => {
+  const email = $('email').value.trim();
+  const password = $('password').value;
+
+  $('loginError').textContent = '';
+
+  if (!supabaseClient) {
+    $('loginError').textContent = 'Supabase लोड नहीं हुआ। पेज रीफ़्रेश करके दोबारा कोशिश करें।';
+    return;
+  }
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    $('loginError').textContent = 'लॉगिन नहीं हुआ: ' + error.message;
+    return;
+  }
+
   $('login').classList.add('hidden');
   $('app').classList.remove('hidden');
   render();
 });
+
+
 $('lockBtn').addEventListener('click', () => {
   $('app').classList.add('hidden');
   $('login').classList.remove('hidden');
