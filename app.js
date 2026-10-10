@@ -1,9 +1,10 @@
 const SUPABASE_URL =
-  'https://oomvafcwjzjwpvssmdmi.supabase.co/rest/v1/
+'https://oomvafcwjzjwpvssmdmi.supabase.co/rest/v1/
 const SUPABASE_KEY = 
-  'sb_publishable_MsuyDVKxDk50cemAWBNKhg_QIzKvroX
+'sb_publishable_MsuyDVKxDk50cemAWBNKhg_QIzKvroX
 
-const supabaseClient = window.supabase.createClient(
+const supabaseClient =
+  window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
