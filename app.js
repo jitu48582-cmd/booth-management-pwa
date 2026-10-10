@@ -34,34 +34,28 @@ document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () =>
 $('loginBtn').addEventListener('click', async () => {
   const email = $('email').value.trim();
   const password = $('password').value;
+  const errorBox = $('loginError');
 
-  $('loginError').textContent = '';
+  errorBox.textContent = 'लॉगिन जाँचा जा रहा है...';
 
-  if (!supabaseClient) {
-    $('loginError').textContent = 'Supabase लोड नहीं हुआ। पेज रीफ़्रेश करके दोबारा कोशिश करें।';
-    return;
+  try {
+    if (!supabaseClient) {
+      throw new Error('Supabase लोड नहीं हुआ।');
+    }
+
+    const { error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) throw error;
+
+    $('login').classList.add('hidden');
+    $('app').classList.remove('hidden');
+    render();
+  } catch (error) {
+    errorBox.textContent = 'लॉगिन विफल: ' + error.message;
   }
-
-  const { data, error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if (error) {
-    $('loginError').textContent = 'लॉगिन नहीं हुआ: ' + error.message;
-    return;
-  }
-
-  $('login').classList.add('hidden');
-  $('app').classList.remove('hidden');
-  render();
-});
-
-
-$('lockBtn').addEventListener('click', () => {
-  $('app').classList.add('hidden');
-  $('login').classList.remove('hidden');
-  $('pin').value = '';
 });
 
 $('boothForm').addEventListener('submit', e => {
