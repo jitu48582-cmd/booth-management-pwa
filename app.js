@@ -11,24 +11,34 @@ const STORE = 'boothManagerDemoV1';
 let state = { booths: [], contacts: [] };
 
 function load() {
-  async function loadFromSupabase() {
+  try {
+    const raw = localStorage.getItem(STORE);
+    if (raw) state = JSON.parse(raw);
+  } catch (_) {
+    state = { booths: [], contacts: [] };
+  }
+}
+
+async function loadFromSupabase() {
   const { data: { user }, error: userError } =
     await supabaseClient.auth.getUser();
 
   if (userError) throw userError;
   if (!user) throw new Error('लॉगिन नहीं है।');
 
-  const { data: booths, error: boothError } = await supabaseClient
-    .from('booths')
-    .select('*')
-    .eq('user_id', user.id);
+  const { data: booths, error: boothError } =
+    await supabaseClient
+      .from('booths')
+      .select('*')
+      .eq('user_id', user.id);
 
   if (boothError) throw boothError;
 
-  const { data: contacts, error: contactError } = await supabaseClient
-    .from('contacts')
-    .select('*')
-    .eq('user_id', user.id);
+  const { data: contacts, error: contactError } =
+    await supabaseClient
+      .from('contacts')
+      .select('*')
+      .eq('user_id', user.id);
 
   if (contactError) throw contactError;
 
@@ -51,11 +61,6 @@ function load() {
   }));
 
   localStorage.setItem(STORE, JSON.stringify(state));
-  }
-  try {
-    const raw = localStorage.getItem(STORE);
-    if (raw) state = JSON.parse(raw);
-  } catch (_) { state = { booths: [], contacts: [] }; }
 }
 async function save() {
   localStorage.setItem(STORE, JSON.stringify(state));
