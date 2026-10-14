@@ -246,6 +246,10 @@ function renderContacts() {
   $('contactList').innerHTML = rows.length ? rows.map(c => {
     const b = state.booths.find(x => x.id === c.boothId);
     return `<div class="record"><strong>${safeText(c.name)}</strong><div>${safeText(c.phone)}</div>
+    <label>
+  <input type="checkbox" class="select-contact" value="${safeText(c.id)}">
+  यह संपर्क चुनें
+</label>
     <div class="muted">बूथ ${safeText(b?.number || '-')} • ${safeText(b?.area || '')}</div>
   <a class="secondary" href="https://wa.me/${c.phone.replace(/\D/g, '')}?text=${encodeURIComponent('नमस्ते ' + c.name + ',\n' + ($('messageText')?.value || ''))}" target="_blank" rel="noopener">WhatsApp मैसेज भेजें</a>
     <span class="pill">WhatsApp: ${c.waConsent ? 'सहमति दर्ज' : 'नहीं'}</span><span class="pill">SMS: ${c.smsConsent ? 'सहमति दर्ज' : 'नहीं'}</span>
