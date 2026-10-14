@@ -189,6 +189,15 @@ alert('संपर्क सेव करने की प्रक्रिय
 $('searchContacts').addEventListener('input', renderContacts);
 
 function render() {
+    const wardList = $('wardList');
+  if (wardList) {
+    wardList.innerHTML = Array.from({ length: 9 }, (_, i) => `
+      <div class="record">
+        <strong>वार्ड संख्या ${i + 1}</strong>
+        <div class="muted">ग्राम पंचायत: कोटड़ी कलां</div>
+      </div>
+    `).join('');
+  }
   $('mBooths').textContent = state.booths.length;
   $('mContacts').textContent = state.contacts.length;
   $('mWa').textContent = state.contacts.filter(c => c.waConsent).length;
