@@ -133,6 +133,7 @@ $('contactForm').addEventListener('submit', async e => {
   });
   $('contactForm').reset();await save();
 alert('संपर्क सेव करने की प्रक्रिया पूरी हुई।');
+  });
 $('searchContacts').addEventListener('input', renderContacts);
 
 function render() {
