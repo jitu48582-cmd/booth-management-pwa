@@ -62,7 +62,7 @@ async function save() {
       if (error) throw error;
     }
 
-    alert('डेटा Supabase में सेव हो गया।');
+    alert('Supabase में सेव करने की प्रक्रिया पूरी हुई। अब Table Editor में जाँचें।');
   } catch (error) {
     alert('Supabase में सेव नहीं हुआ: ' + error.message);
   }
