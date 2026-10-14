@@ -16,8 +16,57 @@ function load() {
     if (raw) state = JSON.parse(raw);
   } catch (_) { state = { booths: [], contacts: [] }; }
 }
-function save() {
+async function save() {
   localStorage.setItem(STORE, JSON.stringify(state));
+
+  try {
+    const { data: { user }, error: userError } =
+      await supabaseClient.auth.getUser();
+
+    if (userError) throw userError;
+    if (!user) throw new Error('लॉगिन नहीं है।');
+
+    const booths = state.booths.map(b => ({
+      id: b.id,
+      user_id: user.id,
+      booth_number: b.number,
+      area: b.area,
+      created_at: b.createdAt
+    }));
+
+    if (booths.length) {
+      const { error } = await supabaseClient
+        .from('booths')
+        .upsert(booths);
+
+      if (error) throw error;
+    }
+
+    const contacts = state.contacts.map(c => ({
+      id: c.id,
+      user_id: user.id,
+      booth_id: c.boothId,
+      name: c.name,
+      phone: c.phone,
+      wa_consent: c.waConsent,
+      sms_consent: c.smsConsent,
+      consent_at: c.consentAt,
+      created_at: c.createdAt
+    }));
+
+    if (contacts.length) {
+      const { error } = await supabaseClient
+        .from('contacts')
+        .upsert(contacts);
+
+      if (error) throw error;
+    }
+
+    alert('डेटा Supabase में सेव हो गया।');
+  } catch (error) {
+    alert('Supabase में सेव नहीं हुआ: ' + error.message);
+  }
+
   render();
 }
 function safeText(s) {
