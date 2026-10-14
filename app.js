@@ -107,7 +107,7 @@ $('loginBtn').addEventListener('click', async () => {
   }
 });
 
-$('boothForm').addEventListener('submit', e => {
+$('boothForm').addEventListener('submit', async e => {
   e.preventDefault();
   const number = $('boothNo').value.trim(), area = $('boothArea').value.trim();
   if (state.booths.some(b => b.number.toLowerCase() === number.toLowerCase() && b.area.toLowerCase() === area.toLowerCase())) return alert('यह बूथ पहले से मौजूद है।');
