@@ -112,8 +112,9 @@ $('boothForm').addEventListener('submit', async e => {
   const number = $('boothNo').value.trim(), area = $('boothArea').value.trim();
   if (state.booths.some(b => b.number.toLowerCase() === number.toLowerCase() && b.area.toLowerCase() === area.toLowerCase())) return alert('यह बूथ पहले से मौजूद है।');
   state.booths.push({ id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()), number, area, createdAt: new Date().toISOString() });
-  $('boothForm').reset(); save(); alert('बूथ सेव हो गया।');
-});
+  $('boothForm').reset();
+await save();
+alert('बूथ सेव करने की प्रक्रिया पूरी हुई।');
 
 $('contactForm').addEventListener('submit', e => {
   e.preventDefault();
