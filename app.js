@@ -115,7 +115,7 @@ $('boothForm').addEventListener('submit', async e => {
   $('boothForm').reset();
 await save();
 alert('बूथ सेव करने की प्रक्रिया पूरी हुई।');
-
+});
 $('contactForm').addEventListener('submit', async e => {
   e.preventDefault();
   if (!state.booths.length) return alert('पहले बूथ जोड़ें।');
