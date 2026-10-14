@@ -194,8 +194,19 @@ function render() {
   $('mWa').textContent = state.contacts.filter(c => c.waConsent).length;
   $('mSms').textContent = state.contacts.filter(c => c.smsConsent).length;
   $('boothList').innerHTML = state.booths.length ? state.booths.map(b =>
-    `<div class="record"><strong>बूथ ${safeText(b.number)}</strong><div class="muted">${safeText(b.area)}</div>
-    <button class="secondary" data-delete-booth="${safeText(b.id)}" style="margin-top:8px">बूथ हटाएँ</button></div>`).join('') : '<p class="muted">अभी बूथ नहीं हैं।</p>';
+  `<div class="record">
+    <strong>बूथ ${safeText(b.number)}</strong>
+    <div class="muted">${safeText(b.area)}</div>
+    <button class="secondary" data-view-booth="${safeText(b.id)}" style="margin-top:8px">विवरण देखें</button>
+    <button class="secondary" data-delete-booth="${safeText(b.id)}" style="margin-top:8px">बूथ हटाएँ</button>
+  </div>`).join('') : '<p class="muted">अभी बूथ नहीं हैं।</p>';
+
+$('boothList').querySelectorAll('[data-view-booth]').forEach(btn => btn.addEventListener('click', () => {
+  const b = state.booths.find(x => x.id === btn.dataset.viewBooth);
+  if (!b) return;
+  const count = state.contacts.filter(c => c.boothId === b.id).length;
+  alert(`बूथ संख्या: ${b.number}\nक्षेत्र: ${b.area}\nकुल संपर्क: ${count}`);
+}));
   $('boothList').querySelectorAll('[data-delete-booth]').forEach(btn => btn.addEventListener('click', () => {
     const id = btn.dataset.deleteBooth;
     if (state.contacts.some(c => c.boothId === id)) return alert('इस बूथ में संपर्क हैं। पहले संपर्क हटाएँ या उन्हें दूसरे बूथ में स्थानांतरित करें।');
