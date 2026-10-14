@@ -213,12 +213,23 @@ $('boothList').querySelectorAll('[data-view-booth]').forEach(btn => btn.addEvent
     if (confirm('क्या आप यह बूथ हटाना चाहते हैं?')) { state.booths = state.booths.filter(b => b.id !== id); save(); }
   }));
   $('contactBooth').innerHTML = state.booths.map(b => `<option value="${safeText(b.id)}">${safeText(b.number)} — ${safeText(b.area)}</option>`).join('');
-  $('reportContent').innerHTML = `<div class="grid">
+  $('reportContent').innerHTML = `
+  <div class="grid">
     <div class="metric"><span>कुल बूथ</span><strong>${state.booths.length}</strong></div>
     <div class="metric"><span>कुल संपर्क</span><strong>${state.contacts.length}</strong></div>
-    <div class="metric"><span>WhatsApp सहमति</span><strong>${state.contacts.filter(c=>c.waConsent).length}</strong></div>
-    <div class="metric"><span>SMS सहमति</span><strong>${state.contacts.filter(c=>c.smsConsent).length}</strong></div></div>`;
-  renderContacts();
+    <div class="metric"><span>WhatsApp सहमति</span><strong>${state.contacts.filter(c => c.waConsent).length}</strong></div>
+    <div class="metric"><span>SMS सहमति</span><strong>${state.contacts.filter(c => c.smsConsent).length}</strong></div>
+  </div>
+  <h3>बूथ के अनुसार रिपोर्ट</h3>
+  ${state.booths.length ? state.booths.map(b => `
+    <div class="record">
+      <strong>बूथ ${safeText(b.number)}</strong>
+      <div class="muted">क्षेत्र: ${safeText(b.area)}</div>
+      <div>कुल संपर्क: ${state.contacts.filter(c => c.boothId === b.id).length}</div>
+    </div>
+  `).join('') : '<p class="muted">अभी कोई बूथ नहीं है।</p>'}
+`;
+renderContacts();
 }
 function renderContacts() {
   const q = ($('searchContacts')?.value || '').trim().toLowerCase();
