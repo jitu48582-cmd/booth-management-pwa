@@ -142,6 +142,12 @@ $('loginBtn').addEventListener('click', async () => {
 
     $('login').classList.add('hidden');
     $('app').classList.remove('hidden');
+    try {
+  await loadFromSupabase();
+  render();
+} catch (error) {
+  alert('डेटा लोड नहीं हुआ: ' + error.message);
+    }
     render();
   } catch (error) {
     errorBox.textContent = 'लॉगिन विफल: ' + error.message;
