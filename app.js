@@ -131,8 +131,9 @@ $('contactForm').addEventListener('submit', async e => {
     consentAt: (wa || sms) ? new Date().toISOString() : null,
     createdAt: new Date().toISOString()
   });
-  $('contactForm').reset(); save(); alert('संपर्क सेव हो गया।');
-});
+  $('contactForm').reset();
+await save();
+alert('संपर्क सेव करने की प्रक्रिया पूरी हुई।');
 $('searchContacts').addEventListener('input', renderContacts);
 
 function render() {
