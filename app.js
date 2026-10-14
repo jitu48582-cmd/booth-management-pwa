@@ -11,6 +11,47 @@ const STORE = 'boothManagerDemoV1';
 let state = { booths: [], contacts: [] };
 
 function load() {
+  async function loadFromSupabase() {
+  const { data: { user }, error: userError } =
+    await supabaseClient.auth.getUser();
+
+  if (userError) throw userError;
+  if (!user) throw new Error('लॉगिन नहीं है।');
+
+  const { data: booths, error: boothError } = await supabaseClient
+    .from('booths')
+    .select('*')
+    .eq('user_id', user.id);
+
+  if (boothError) throw boothError;
+
+  const { data: contacts, error: contactError } = await supabaseClient
+    .from('contacts')
+    .select('*')
+    .eq('user_id', user.id);
+
+  if (contactError) throw contactError;
+
+  state.booths = booths.map(b => ({
+    id: b.id,
+    number: b.booth_number,
+    area: b.area,
+    createdAt: b.created_at
+  }));
+
+  state.contacts = contacts.map(c => ({
+    id: c.id,
+    boothId: c.booth_id,
+    name: c.name,
+    phone: c.phone,
+    waConsent: c.wa_consent,
+    smsConsent: c.sms_consent,
+    consentAt: c.consent_at,
+    createdAt: c.created_at
+  }));
+
+  localStorage.setItem(STORE, JSON.stringify(state));
+  }
   try {
     const raw = localStorage.getItem(STORE);
     if (raw) state = JSON.parse(raw);
